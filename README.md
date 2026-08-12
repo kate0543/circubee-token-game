@@ -4,7 +4,7 @@ An interactive online version of the CircuBee Balance Challenge for stakeholder 
 
 ## Run locally
 
-Open `index.html` in a browser.
+[Open token game follow this link](https://kate0543.github.io/circubee-token-game/)
 
 ## GitHub Pages
 
