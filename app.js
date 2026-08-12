@@ -363,6 +363,9 @@ function render() {
       <div class="card">
         <h2>Thank you</h2>
         <p>Your Balance Challenge is complete.</p>
+        <div class="notice">
+          Please stay for the group discussion at the end of the activity. Participants will receive a £10 Amazon voucher.
+        </div>
         <div class="grid">
           <div class="cat red">
             <h3>Barriers</h3>
