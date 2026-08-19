@@ -540,7 +540,6 @@ function start() {
 
 function setParticipant(field, value) {
   participant[field] = value;
-  render();
 }
 
 function appendMagicSuggestion(suggestion) {
