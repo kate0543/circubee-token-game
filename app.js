@@ -56,8 +56,9 @@ const titles = [
   "Support",
   "Weight",
   "Balance",
-  "Decision",
   "Your view",
+  "About CircuBee",
+  "Would you participate?",
   "Summary"
 ];
 
@@ -89,6 +90,16 @@ function render() {
         <div class="notice">
           <b>How will your answers be used?</b><br>
           If you agree below, your answers may be used as anonymised/aggregated preliminary research evidence to help develop the CircuBee project, future funding applications, publications and a potential pilot. Taking part is voluntary. You can use the game without agreeing to share your answers for research.
+        </div>
+        <div class="notice">
+          <b>Researchers for this event:</b><br><br>
+          <b>Kate Han</b> — k.han3@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/kate-han" target="_blank" rel="noopener noreferrer">Profile</a><br>
+          <b>Ruth Hudson</b> — R.A.Hudson@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/ruth-hudson" target="_blank" rel="noopener noreferrer">Profile</a><br>
+          <b>Ashraful Alam</b> — m.a.alam@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/md-ashraful-alam" target="_blank" rel="noopener noreferrer">Profile</a>
+        </div>
+        <div class="notice">
+          <b>Reminder:</b><br>
+          Promotional photos will be taken at the social science research event. If a participant does not wish to be photographed, please inform the staff.
         </div>
         <div class="consent">
           <label>
@@ -134,6 +145,9 @@ function render() {
           "250+"
         ];
 
+        const emailInvalid = participant.email.trim() !== "" && !isValidEmail(participant.email);
+        const postcodeInvalid = participant.postcode.trim() !== "" && !isValidPostcode(participant.postcode);
+
         a.innerHTML = `
           <div class="card">
             <h2>Participant details</h2>
@@ -145,8 +159,10 @@ function render() {
               value="${escapeHtml(participant.email)}"
               oninput="setParticipant('email', this.value)"
               placeholder="name@example.com"
+              class="${emailInvalid ? "field-invalid" : ""}"
               style="width:100%;padding:12px;border:2px solid var(--line);border-radius:11px;font:inherit;"
             >
+            ${emailInvalid ? '<div class="validation-message">Reminder: Please enter a valid email format, for example name@example.com.</div>' : ""}
 
             <p><b>Industry sector</b></p>
             <select
@@ -182,8 +198,10 @@ function render() {
               value="${escapeHtml(participant.postcode)}"
               oninput="setParticipant('postcode', this.value)"
               placeholder="e.g. M5 4WT"
+              class="${postcodeInvalid ? "field-invalid" : ""}"
               style="width:100%;padding:12px;border:2px solid var(--line);border-radius:11px;font:inherit;"
             >
+            ${postcodeInvalid ? '<div class="validation-message">Reminder: Please enter a valid postcode format, for example M5 4WT or OL9 7AA.</div>' : ""}
 
             <p><b>Address</b></p>
             <textarea
@@ -318,10 +336,106 @@ function render() {
   }
 
   if (step === 7) {
+    const magicHints = [
+      "More information",
+      "Meet the whole research team",
+      "Know other participants' thoughts",
+      "Other ideas"
+    ];
+
+    a.innerHTML = `
+      <div class="card">
+        <h2>What would change your view?</h2>
+        <p>What is the single thing CircuBee could provide that would make you more likely to participate?</p>
+        <div class="suggestions">
+          ${magicHints
+            .map(
+              (hint) => `<button type="button" class="suggestion-btn" onclick="appendMagicSuggestion('${hint.replace(/'/g, "\\'")}')">${hint}</button>`
+            )
+            .join("")}
+        </div>
+        <textarea id="magic" placeholder="Optional response — click a suggestion above or type your own idea.">${escapeHtml(magic)}</textarea>
+        <div class="actions">
+          <button class="btn secondary" onclick="prev()">Back</button>
+          <button class="btn" onclick="magic=document.getElementById('magic').value;next()">Continue</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (step === 8) {
+    a.innerHTML = `
+      <div class="card">
+        <h2>About CircuBee</h2>
+        <p>CircuBee is a local circular rewards scheme designed to support sustainable shopping and community-based participation. It aims to help local businesses and customers reconnect around reuse, waste reduction, and environmentally responsible choices.</p>
+
+        <div class="notice">
+          <b>Participation is free</b><br>
+          This research is free to join, and no money is expected from participants. There is no payment required to take part in this project or in the activities described here.
+        </div>
+
+        <div class="notice">
+          <b>Project background</b><br>
+          This project began from interest in circular economy research and was motivated by the goal of expanding sustainability awareness and increasing community engagement through neighbourhood business networks. The first phase will focus on Salford University, the MediaCity neighbourhood, and local daily routines, commuter patterns, and customer behaviour. The project started from the idea in April 2026 and is designed to explore circular economy thinking through practical community-based research.
+        </div>
+
+        <div class="notice">
+          <b>Research plan</b><br>
+          This project is exploring how local businesses might participate in a circular rewards model and what would encourage or prevent adoption. The research will help us understand barriers, motivations, and practical support needs before testing a future pilot. The first run is centred around Salford University and the MediaCity neighbourhood, with future research expanding to wider public commuting and everyday work routines.
+        </div>
+
+        <div class="notice">
+          <b>Timeline</b><br>
+          The project began in April 2026. Planned activities include the Social Science Festival from October to November 2026, followed by further data collection and research until December 2026. This will then extend into a larger commercial research project expected to benefit more people across 2027.
+        </div>
+
+        <div class="notice">
+          <b>Research team</b><br>
+          <b>Kate Han</b> — k.han3@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/kate-han" target="_blank" rel="noopener noreferrer">Profile</a><br>
+          <small>Dr. Kate Han is a Lecturer in Digital Business at Salford Business School, University of Salford. Her research focuses on artificial intelligence, simulation and optimisation, digital twins, machine learning, and data engineering, with applications in intelligent transport systems, sustainability, and digital transformation. She also has a strong interest in innovative teaching and learning and the responsible adoption of AI in higher education.</small><br><br>
+          <b>Ruth Hudson</b> — R.A.Hudson@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/ruth-hudson" target="_blank" rel="noopener noreferrer">Profile</a><br>
+          <small>Dr Ruth Hudson is an experienced higher education curriculum developer, leader, multi-disciplinary researcher, learning and teaching specialist, and project lead for Carbon Literacy at Salford Business School. Ruth has also developed HE programmes internationally, including the development of global student exchanges. Her expertise extends to leading a digital transformation teaching and learning project in HE, transforming active learning for student engagement and graduate outcomes.</small><br><br>
+          <b>Ashraful Alam</b> — m.a.alam@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/md-ashraful-alam" target="_blank" rel="noopener noreferrer">Profile</a><br>
+          <small>Dr. Ashraful Alam is an Associate Professor of Sustainability &amp; Programme Leader for MSc Finance at the University of Salford. Before joining Salford, he gained experience teaching at the University of York and Leeds Beckett University. Moreover, he previously held an Assistant Professor position at the University of Dhaka, Bangladesh. He completed his PhD from the University of York. His main area of research revolves around sustainability, innovation, governance, and fintech. He has an extensive publication record with over 20 publications, including 4* and 3* ABS-listed journals. Additionally, he has experience securing both internal and external bids as a Principal and co-investigator. He has supervised 7 PhD students to completion and welcomes interesting PhD applications.</small>
+        </div>
+
+        <div class="notice">
+          <b>Contact details</b><br>
+          If you have any questions about the study, please contact the research team using the email addresses above. You are free to ask questions before deciding whether to take part.
+        </div>
+
+        <div class="notice">
+          <b>Download study documents</b><br>
+          <ul>
+            <li><a href="Participant%20Information%20Sheet%20%E2%80%93%20CircuBee%20Sustainable%20Business%20Participation%20Study.docx" download>Participant Information Sheet</a></li>
+            <li><a href="Participant%20Consent%20Form%20%E2%80%93%20CircuBee%20Study.docx" download>Participant Consent Form</a></li>
+            <li><a href="Research%20Participant%20Risk%20Assessment%20%E2%80%93%20CircuBee%20Project.docx" download>Research Participant Risk Assessment</a></li>
+          </ul>
+        </div>
+
+        <div class="actions">
+          <button class="btn secondary" onclick="prev()">Back</button>
+          <button class="btn" onclick="next()">Continue</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (step === 9) {
     a.innerHTML = `
       <div class="card">
         <h2>Would you participate?</h2>
         <p>How likely would you be to participate in a local circular rewards scheme?</p>
+        <div class="notice">
+          <b>Participation is free</b><br>
+          This research is free to join, and no money is expected from participants. There is no payment required to take part.
+        </div>
+        <div class="notice">
+          <b>Potential benefits for participants:</b><br>
+          Participating may help you learn more about sustainable local business models, contribute to research that supports greener community initiatives, and potentially benefit from future opportunities such as local rewards, pilot activities, and practical insights into circular business approaches.
+        </div>
         ${[
           ["no", "Definitely would not participate"],
           ["probably-no", "Probably would not participate"],
@@ -343,22 +457,34 @@ function render() {
     return;
   }
 
-  if (step === 8) {
+  if (step === 10) {
     a.innerHTML = `
       <div class="card">
-        <h2>What would change your mind?</h2>
-        <p>What is the single thing CircuBee could provide that would make you more likely to participate?</p>
-        <textarea id="magic" placeholder="Optional response"></textarea>
+        <h2>Follow-up contact</h2>
+        <p>Depending on your response, a researcher may contact you about future activities related to this study. If you are approached, the research team may ask for further information or invite you to take part in later stages of the research.</p>
+
+        <div class="notice">
+          <b>Research team contact details</b><br>
+          <b>Kate Han</b> — k.han3@salford.ac.uk<br>
+          <b>Ruth Hudson</b> — R.A.Hudson@salford.ac.uk<br>
+          <b>Ashraful Alam</b> — m.a.alam@salford.ac.uk<br>
+        </div>
+
+        <div class="notice">
+          <b>Withdrawal</b><br>
+          You can still withdraw from the research at any time during the following activities or later stages of the project. If you do not wish to be contacted for follow-up research, please inform the staff or contact the research team using the email addresses above.
+        </div>
+
         <div class="actions">
           <button class="btn secondary" onclick="prev()">Back</button>
-          <button class="btn" onclick="magic=document.getElementById('magic').value;next()">Finish</button>
+          <button class="btn" onclick="next()">Continue</button>
         </div>
       </div>
     `;
     return;
   }
 
-      if (step === 9) {
+      if (step === 11) {
     a.innerHTML = `
       <div class="card">
         <h2>Thank you</h2>
@@ -417,12 +543,33 @@ function setParticipant(field, value) {
   render();
 }
 
+function appendMagicSuggestion(suggestion) {
+  const textarea = document.getElementById("magic");
+  if (!textarea) return;
+
+  const current = textarea.value.trim();
+  const nextValue = current ? `${current}; ${suggestion}` : suggestion;
+  textarea.value = nextValue;
+  textarea.focus();
+  textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+}
+
+function isValidEmail(value) {
+  const email = value.trim();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPostcode(value) {
+  const postcode = value.trim();
+  return /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/i.test(postcode);
+}
+
 function participantDetailsComplete() {
   return (
-    participant.email.trim() &&
+    isValidEmail(participant.email) &&
     participant.industry.trim() &&
     participant.employees.trim() &&
-    participant.postcode.trim() &&
+    isValidPostcode(participant.postcode) &&
     participant.address.trim()
   );
 }
@@ -493,6 +640,12 @@ function decisionLabel() {
 }
 
 function next() {
+  if (step === 9 && decision === "no") {
+    step = 11;
+    render();
+    return;
+  }
+
   step++;
   render();
 }
