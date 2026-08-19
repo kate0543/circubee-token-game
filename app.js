@@ -47,6 +47,7 @@ let participant = {
   address: ""
 };
 let submitState = { status: "idle", message: "" };
+const validationState = { email: false, postcode: false };
 
 const titles = [
   "Consent",
@@ -145,8 +146,8 @@ function render() {
           "250+"
         ];
 
-        const emailInvalid = participant.email.trim() !== "" && !isValidEmail(participant.email);
-        const postcodeInvalid = participant.postcode.trim() !== "" && !isValidPostcode(participant.postcode);
+        const emailInvalid = validationState.email && participant.email.trim() !== "" && !isValidEmail(participant.email);
+        const postcodeInvalid = validationState.postcode && participant.postcode.trim() !== "" && !isValidPostcode(participant.postcode);
 
         a.innerHTML = `
           <div class="card">
@@ -158,6 +159,7 @@ function render() {
               type="email"
               value="${escapeHtml(participant.email)}"
               oninput="setParticipant('email', this.value)"
+              onblur="setParticipant('email', this.value); validationState.email = true; render();"
               placeholder="name@example.com"
               class="${emailInvalid ? "field-invalid" : ""}"
               style="width:100%;padding:12px;border:2px solid var(--line);border-radius:11px;font:inherit;"
@@ -197,6 +199,7 @@ function render() {
               type="text"
               value="${escapeHtml(participant.postcode)}"
               oninput="setParticipant('postcode', this.value)"
+              onblur="setParticipant('postcode', this.value); validationState.postcode = true; render();"
               placeholder="e.g. M5 4WT"
               class="${postcodeInvalid ? "field-invalid" : ""}"
               style="width:100%;padding:12px;border:2px solid var(--line);border-radius:11px;font:inherit;"
@@ -540,6 +543,10 @@ function start() {
 
 function setParticipant(field, value) {
   participant[field] = value;
+
+  if (field === "email" || field === "postcode") {
+    validationState[field] = validationState[field] || !!value.trim();
+  }
 }
 
 function appendMagicSuggestion(suggestion) {
