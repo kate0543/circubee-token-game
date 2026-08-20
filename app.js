@@ -31,6 +31,11 @@ const data = {
 };
 
 const POWER_AUTOMATE_URL = "https://default65b52940f4b641bd833d3033ecbcf6.e1.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/00/workflows/9484b84cbf5749f4924daba3eba0c157/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=cSw9OPZGspKquOVioiy0CPMAFPrhyI5OhsO_W5ZhuMY";
+const teamAvatars = {
+  kate: "👩🏻‍🔬",
+  ruth: "👩🏼‍🔬",
+  ashraful: "👨🏾‍🔬"
+};
 
 let step = 0;
 let consent = false;
@@ -40,6 +45,7 @@ let decision = "";
 let magic = "";
 const responseId = crypto.randomUUID();
 let participant = {
+  avatar: "🐝",
   email: "",
   industry: "",
   employees: "",
@@ -48,13 +54,14 @@ let participant = {
 };
 let submitState = { status: "idle", message: "" };
 const validationState = { email: false, postcode: false };
+let participantDetailsChecked = false;
 
 const titles = [
   "Consent",
   "Participant details",
   "Barriers",
   "Benefits",
-  "Support",
+  "Enablers",
   "Weight",
   "Balance",
   "Your view",
@@ -67,6 +74,17 @@ function progress() {
   document.getElementById("progress").innerHTML = titles
     .map((_, i) => `<span class="dot ${i <= step ? "on" : ""}"></span>`)
     .join("");
+
+  const roundStatus = document.getElementById("round-status");
+  const impactStatus = document.getElementById("impact-status");
+  const choiceStatus = document.getElementById("choice-status");
+  if (roundStatus) {
+    roundStatus.textContent = step < 2 ? "Setup" : `${Math.min(step - 1, 3)}/3`;
+  }
+  if (impactStatus) {
+    impactStatus.textContent = step < 5 ? "Pending" : score("benefits") + score("support") - score("barriers");
+  }
+  if (choiceStatus) choiceStatus.textContent = Object.values(selections).reduce((total, items) => total + items.length, 0);
 }
 
 function render() {
@@ -76,10 +94,12 @@ function render() {
   if (step === 0) {
     a.innerHTML = `
       <div class="card">
-        <h2>Before you start</h2>
+        <span class="mission-label">Your mission starts here</span>
+        <h2>🐝 Build your CircuBee champion</h2>
         <p>
-          This short activity explores what would encourage or prevent a local business from participating in a circular rewards scheme called CircuBee.
+          You are the decision-maker for a local business. Your mission: build a brilliant CircuBee launch plan, one token at a time. Spot the trouble, chase the good stuff, and unlock the enablers!
         </p>
+        <div class="game-signal"><span class="signal-icon">🍯</span> Make smart moves, collect your tokens, and see whether your plan can tip the balance!</div>
         <div class="notice">
           <b>Event context:</b><br>
           This activity is for the 2026 ESRC Festival event, held by Salford Business School, for initial preliminary data collection and research for the CircuBee project, which aims to promote a circular, sustainable, local community-based business-circle economy.
@@ -94,9 +114,9 @@ function render() {
         </div>
         <div class="notice">
           <b>Researchers for this event:</b><br><br>
-          <b>Kate Han</b> — k.han3@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/kate-han" target="_blank" rel="noopener noreferrer">Profile</a><br>
-          <b>Ruth Hudson</b> — R.A.Hudson@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/ruth-hudson" target="_blank" rel="noopener noreferrer">Profile</a><br>
-          <b>Ashraful Alam</b> — m.a.alam@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/md-ashraful-alam" target="_blank" rel="noopener noreferrer">Profile</a>
+          <span class="team-avatar">${teamAvatars.kate}</span> <b>Kate Han</b> — k.han3@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/kate-han" target="_blank" rel="noopener noreferrer">Profile</a><br>
+          <span class="team-avatar">${teamAvatars.ruth}</span> <b>Ruth Hudson</b> — R.A.Hudson@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/ruth-hudson" target="_blank" rel="noopener noreferrer">Profile</a><br>
+          <span class="team-avatar">${teamAvatars.ashraful}</span> <b>Ashraful Alam</b> — m.a.alam@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/md-ashraful-alam" target="_blank" rel="noopener noreferrer">Profile</a>
         </div>
         <div class="notice">
           <b>Reminder:</b><br>
@@ -113,7 +133,7 @@ function render() {
         </div>
         <div class="actions">
           <span></span>
-          <button class="btn" onclick="start()">${consent ? "Agree & start" : "Start without sharing research data"}</button>
+          <button class="btn" onclick="start()">${consent ? "🐝 Enter the hive" : "🐝 Start the challenge"}</button>
         </div>
       </div>
     `;
@@ -146,17 +166,25 @@ function render() {
           "250+"
         ];
 
-        const emailInvalid = validationState.email && participant.email.trim() !== "" && !isValidEmail(participant.email);
-        const postcodeInvalid = validationState.postcode && participant.postcode.trim() !== "" && !isValidPostcode(participant.postcode);
+        const emailInvalid = participantDetailsChecked && !isValidEmail(participant.email);
+        const postcodeInvalid = participantDetailsChecked && !isValidPostcode(participant.postcode);
+        const industryMissing = participantDetailsChecked && !participant.industry.trim();
+        const employeesMissing = participantDetailsChecked && !participant.employees.trim();
+        const addressMissing = participantDetailsChecked && !participant.address.trim();
 
         a.innerHTML = `
           <div class="card">
-            <h2>Participant details</h2>
-            <p>Please provide the details below for preliminary data collection.</p>
+            <span class="mission-label">Player setup</span>
+            <h2>🛠️ Set up your business</h2>
+            <div class="player-avatar" title="Your industry avatar">${participant.avatar}</div>
+            <p><b>${participant.avatar} Your industry avatar</b> — choose your sector below and your character will match it.</p>
+            <p>Tell us who is entering the challenge. Fill every field to unlock Round 1 and get your first token mission.</p>
 
             <p><b>Email address</b></p>
             <input
+              id="participant-email"
               type="email"
+              required
               value="${escapeHtml(participant.email)}"
               oninput="setParticipant('email', this.value)"
               onblur="setParticipant('email', this.value); validationState.email = true; render();"
@@ -164,11 +192,14 @@ function render() {
               class="${emailInvalid ? "field-invalid" : ""}"
               style="width:100%;padding:12px;border:2px solid var(--line);border-radius:11px;font:inherit;"
             >
-            ${emailInvalid ? '<div class="validation-message">Reminder: Please enter a valid email format, for example name@example.com.</div>' : ""}
+            ${emailInvalid ? `<div class="validation-message">Please enter a valid email format, for example name@example.com.</div>` : ""}
 
             <p><b>Industry sector</b></p>
             <select
-              onchange="setParticipant('industry', this.value)"
+              id="participant-industry"
+              required
+              onchange="setParticipant('industry', this.value); render()"
+              class="${industryMissing ? "field-required" : ""}"
               style="width:100%;padding:12px;border:2px solid var(--line);border-radius:11px;font:inherit;background:white;"
             >
               <option value="">Select an option</option>
@@ -179,10 +210,14 @@ function render() {
                 )
                 .join("")}
             </select>
+              ${industryMissing ? '<div class="validation-message">Please select an industry sector.</div>' : ""}
 
             <p><b>Number of employees</b></p>
             <select
+              id="participant-employees"
+              required
               onchange="setParticipant('employees', this.value)"
+              class="${employeesMissing ? "field-required" : ""}"
               style="width:100%;padding:12px;border:2px solid var(--line);border-radius:11px;font:inherit;background:white;"
             >
               <option value="">Select an option</option>
@@ -193,10 +228,13 @@ function render() {
                 )
                 .join("")}
             </select>
+              ${employeesMissing ? '<div class="validation-message">Please select the number of employees.</div>' : ""}
 
             <p><b>Postcode</b></p>
             <input
+              id="participant-postcode"
               type="text"
+              required
               value="${escapeHtml(participant.postcode)}"
               oninput="setParticipant('postcode', this.value)"
               onblur="setParticipant('postcode', this.value); validationState.postcode = true; render();"
@@ -204,17 +242,21 @@ function render() {
               class="${postcodeInvalid ? "field-invalid" : ""}"
               style="width:100%;padding:12px;border:2px solid var(--line);border-radius:11px;font:inherit;"
             >
-            ${postcodeInvalid ? '<div class="validation-message">Reminder: Please enter a valid postcode format, for example M5 4WT or OL9 7AA.</div>' : ""}
+            ${postcodeInvalid ? '<div class="validation-message">Please enter a valid postcode format, for example M5 4WT or OL9 7AA.</div>' : ""}
 
             <p><b>Address</b></p>
             <textarea
+              id="participant-address"
+              required
               oninput="setParticipant('address', this.value)"
+              class="${addressMissing ? "field-required" : ""}"
               placeholder="Business or organisation address"
             >${escapeHtml(participant.address)}</textarea>
+            ${addressMissing ? '<div class="validation-message">Please enter a business or organisation address.</div>' : ""}
 
             <div class="actions">
               <button class="btn secondary" onclick="prev()">Back</button>
-              <button class="btn" ${!participantDetailsComplete() ? "disabled" : ""} onclick="next()">Continue</button>
+              <button class="btn" onclick="continueFromParticipantDetails()">Unlock Round 1 🐝</button>
             </div>
           </div>
         `;
@@ -225,20 +267,21 @@ function render() {
         const key = ["barriers", "benefits", "support"][step - 2];
     const head = {
       barriers: "🔴 Barriers",
-      benefits: "🟢 Motivations / Benefits",
-      support: "🔵 Enablers / Support"
+      benefits: "🟢 Benefits",
+      support: "🔵 Enablers"
     }[key];
-    const q = {
-      barriers: "What makes participation difficult?",
-      benefits: "What would make participation worthwhile?",
-      support: "What would make participation easier or more achievable?"
+    const round = {
+      barriers: ["Round 1: Spot the friction", "Your business has limited time and attention. Which barrier tokens could block the CircuBee launch?", "Choose up to 3 barrier tokens for your watchlist."],
+      benefits: ["Round 2: Find the spark", "Which benefit tokens could get customers and staff excited about CircuBee?", "Choose up to 3 benefit tokens to power up your business."],
+      support: ["Round 3: Unlock enablers", "Which enabler tokens could give your CircuBee launch the boost it needs?", "Choose up to 3 enabler tokens to unlock."]
     }[key];
 
     a.innerHTML = `
       <div class="card">
-        <h2>${head}</h2>
-        <p>${q}</p>
-        <p><b>Choose up to 3.</b> Selected: ${selections[key].length}/3</p>
+        <span class="mission-label">Your next move 🐝</span>
+        <h2>${round[0]}</h2>
+        <div class="round-banner"><span><b>${head}</b><br>${round[1]}</span><span class="selection-count">${selections[key].length}/3 tokens</span></div>
+        <p><b>${round[2]}</b> Tap a token to collect it. Tap again to send it back to the hive.</p>
         <div class="tokens">
           ${data[key]
             .map(
@@ -253,7 +296,7 @@ function render() {
         </div>
         <div class="actions">
           <button class="btn secondary" onclick="prev()">Back</button>
-          <button class="btn" ${!selections[key].length ? "disabled" : ""} onclick="next()">Continue</button>
+          <button class="btn" ${!selections[key].length ? "disabled" : ""} onclick="next()">Lock in tokens 🔒</button>
         </div>
       </div>
     `;
@@ -263,22 +306,24 @@ function render() {
   if (step === 5) {
     a.innerHTML = `
       <div class="card">
-        <h2>Weight your priorities</h2>
-        <p>Give each selected item a weight: <b>1 = useful, 2 = important, 3 = critical.</b></p>
+        <span class="mission-label">Power-up round ⚡</span>
+        <h2>Assign points to your tokens</h2>
+        <div class="round-banner"><span><b>How important is each token?</b><br>Choose a small, medium, or large coin for every selected token. The larger the coin, the bigger its pull on your final balance.</span><span class="selection-count">1-3 points</span></div>
+        <p>Tap <b>1</b>, <b>2</b>, or <b>3</b> for each token. <b>1</b> means useful, <b>2</b> means important, and <b>3</b> means critical.</p>
         ${["barriers", "benefits", "support"]
           .map(
             (k) => `
-              <h3>${k === "barriers" ? "🔴 Barriers" : k === "benefits" ? "🟢 Benefits" : "🔵 Support"}</h3>
+              <h3>${k === "barriers" ? "🔴 Barriers" : k === "benefits" ? "🟢 Benefits" : "🔵 Enablers"}</h3>
               ${selections[k]
                 .map(
                   (i) => `
                     <div class="choice">
-                      <b>${data[k][i][0]}</b>
-                      <div>
+                      <div class="token-score-label"><b>${data[k][i][0]}</b></div>
+                      <div class="weight-controls" aria-label="Assign importance points">
                         ${[1, 2, 3]
                           .map(
                             (n) => `
-                              <button class="btn ${weights[k][i] === n ? "" : "secondary"}" style="margin:6px 4px 0 0" onclick="setWeight('${k}',${i},${n})">${n}</button>
+                              <button class="btn weight-btn ${weights[k][i] === n ? "" : "secondary"}" aria-label="Assign ${n} points" title="${n} point${n === 1 ? "" : "s"}" onclick="setWeight('${k}',${i},${n})"><span class="coin-face coin-${n}">${n}</span></button>
                             `
                           )
                           .join("")}
@@ -292,7 +337,7 @@ function render() {
           .join("")}
         <div class="actions">
           <button class="btn secondary" onclick="prev()">Back</button>
-          <button class="btn" onclick="next()">See my balance</button>
+          <button class="btn" onclick="next()">Reveal the balance ⚖️</button>
         </div>
       </div>
     `;
@@ -303,35 +348,44 @@ function render() {
     const r = score("barriers");
     const g = score("benefits") + score("support");
     const d = g - r;
+    const readiness = d > 0 ? "Your CircuBee plan is ready to roll!" : d < 0 ? "Your plan needs a power-up" : "A close call! Your plan is balanced";
+    const resultTone = d > 0 ? "You have built strong momentum." : d < 0 ? "A few more enablers could tip the balance." : "You are right on the line between yes and no.";
+    const barrierWinner = d < 0;
+    const positiveWinner = d > 0;
 
     a.innerHTML = `
       <div class="card">
-        <h2>Your balance</h2>
+        <span class="mission-label">Game complete 🎉</span>
+        <h2>⚖️ Strategy showdown!</h2>
+        <div class="score-callout"><span class="signal-icon">🐝</span> ${readiness}</div>
+        <p style="text-align:center">${resultTone} Watch your tokens take their places on the balance scale!</p>
         <div class="scale">
-          <div class="pan">
+          <div class="pan ${barrierWinner ? "winner" : ""}">
             <h3>🔴 Barriers</h3>
             <div class="score">${r}</div>
             <small>points</small>
+            ${barrierWinner ? '<span class="winner-badge">🏆 Winning side</span>' : ""}
           </div>
           <div class="beam"></div>
-          <div class="pan">
-            <h3>🟢 + 🔵 Benefits & Support</h3>
+          <div class="pan ${positiveWinner ? "winner" : ""}">
+            <h3>🟢 + 🔵 Benefits & Enablers</h3>
             <div class="score">${g}</div>
             <small>points</small>
+            ${positiveWinner ? '<span class="winner-badge">🏆 Winning side</span>' : ""}
           </div>
         </div>
         <p style="text-align:center;font-weight:700">
           ${
             d > 0
-              ? "Benefits and support outweigh the barriers."
+              ? "Benefits and enablers are winning this round!"
               : d < 0
-                ? "The barriers outweigh the benefits and support."
-                : "The balance is even."
+                ? "The barriers are putting up a strong fight."
+                : "It is a perfectly even match."
           }
         </p>
         <div class="actions">
           <button class="btn secondary" onclick="prev()">Back</button>
-          <button class="btn" onclick="next()">Continue</button>
+          <button class="btn" onclick="next()">Share your final thought 💬</button>
         </div>
       </div>
     `;
@@ -340,16 +394,17 @@ function render() {
 
   if (step === 7) {
     const magicHints = [
-      "More information",
-      "Meet the whole research team",
-      "Know other participants' thoughts",
-      "Other ideas"
+      "📚 More information",
+      "👋 Meet the whole research team",
+      "👥 Know other participants' thoughts",
+      "💡 Other ideas"
     ];
 
     a.innerHTML = `
       <div class="card">
+        <span class="mission-label">Reflection &amp; feedback 💬</span>
         <h2>What would change your view?</h2>
-        <p>What is the single thing CircuBee could provide that would make you more likely to participate?</p>
+        <p>The game is complete! What could give CircuBee an even bigger buzz for you?</p>
         <div class="suggestions">
           ${magicHints
             .map(
@@ -370,37 +425,46 @@ function render() {
   if (step === 8) {
     a.innerHTML = `
       <div class="card">
+        <span class="mission-label">Inside the hive 🐝</span>
         <h2>About CircuBee</h2>
-        <p>CircuBee is a local circular rewards scheme designed to support sustainable shopping and community-based participation. It aims to help local businesses and customers reconnect around reuse, waste reduction, and environmentally responsible choices.</p>
+        <div class="about-hero">
+          <h3>Small changes. Local connections. A bigger circular buzz.</h3>
+          <p>CircuBee explores how local businesses and customers can turn everyday choices into a more sustainable community network. Think rewards, reuse, less waste, and more reasons to shop locally.</p>
+        </div>
+
+        <div class="hive-facts">
+          <div class="hive-fact"><strong>📍 Start local</strong>Salford University and the MediaCity neighbourhood are the first places we are exploring.</div>
+          <div class="hive-fact"><strong>♻️ Think circular</strong>We are looking at reuse, waste reduction, sustainable choices, and community connection.</div>
+          <div class="hive-fact"><strong>🐝 Build together</strong>Businesses, customers, students, and researchers can help shape what comes next.</div>
+        </div>
 
         <div class="notice">
-          <b>Participation is free</b><br>
+          <b>🎟️ Participation is free</b><br>
           This research is free to join, and no money is expected from participants. There is no payment required to take part in this project or in the activities described here.
         </div>
 
         <div class="notice">
-          <b>Project background</b><br>
-          This project began from interest in circular economy research and was motivated by the goal of expanding sustainability awareness and increasing community engagement through neighbourhood business networks. The first phase will focus on Salford University, the MediaCity neighbourhood, and local daily routines, commuter patterns, and customer behaviour. The project started from the idea in April 2026 and is designed to explore circular economy thinking through practical community-based research.
+          <b>🌱 Where the idea came from</b><br>
+          This project grew from an interest in circular economy research and a simple question: how can neighbourhood business networks make sustainable choices easier and more engaging? The first phase looks at local daily routines, commuter patterns, and customer behaviour around Salford University and MediaCity.
         </div>
 
         <div class="notice">
-          <b>Research plan</b><br>
-          This project is exploring how local businesses might participate in a circular rewards model and what would encourage or prevent adoption. The research will help us understand barriers, motivations, and practical support needs before testing a future pilot. The first run is centred around Salford University and the MediaCity neighbourhood, with future research expanding to wider public commuting and everyday work routines.
+          <b>🧭 What we are figuring out</b><br>
+          Which barriers get in the way? Which benefits create momentum? Which enablers could help a business take the first step? Your Balance Challenge helps us explore those questions before a future pilot is tested.
         </div>
 
         <div class="notice">
-          <b>Timeline</b><br>
-          The project began in April 2026. Planned activities include the Social Science Festival from October to November 2026, followed by further data collection and research until December 2026. This will then extend into a larger commercial research project expected to benefit more people across 2027.
+          <b>🗓️ The journey so far</b><br>
+          The project began in April 2026. Planned activities include the Social Science Festival from October to November 2026, further data collection until December 2026, and a larger commercial research project expected to benefit more people across 2027.
         </div>
 
         <div class="notice">
-          <b>Research team</b><br>
-          <b>Kate Han</b> — k.han3@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/kate-han" target="_blank" rel="noopener noreferrer">Profile</a><br>
-          <small>Dr. Kate Han is a Lecturer in Digital Business at Salford Business School, University of Salford. Her research focuses on artificial intelligence, simulation and optimisation, digital twins, machine learning, and data engineering, with applications in intelligent transport systems, sustainability, and digital transformation. She also has a strong interest in innovative teaching and learning and the responsible adoption of AI in higher education.</small><br><br>
-          <b>Ruth Hudson</b> — R.A.Hudson@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/ruth-hudson" target="_blank" rel="noopener noreferrer">Profile</a><br>
-          <small>Dr Ruth Hudson is an experienced higher education curriculum developer, leader, multi-disciplinary researcher, learning and teaching specialist, and project lead for Carbon Literacy at Salford Business School. Ruth has also developed HE programmes internationally, including the development of global student exchanges. Her expertise extends to leading a digital transformation teaching and learning project in HE, transforming active learning for student engagement and graduate outcomes.</small><br><br>
-          <b>Ashraful Alam</b> — m.a.alam@salford.ac.uk — <a href="https://www.salford.ac.uk/our-staff/md-ashraful-alam" target="_blank" rel="noopener noreferrer">Profile</a><br>
-          <small>Dr. Ashraful Alam is an Associate Professor of Sustainability &amp; Programme Leader for MSc Finance at the University of Salford. Before joining Salford, he gained experience teaching at the University of York and Leeds Beckett University. Moreover, he previously held an Assistant Professor position at the University of Dhaka, Bangladesh. He completed his PhD from the University of York. His main area of research revolves around sustainability, innovation, governance, and fintech. He has an extensive publication record with over 20 publications, including 4* and 3* ABS-listed journals. Additionally, he has experience securing both internal and external bids as a Principal and co-investigator. He has supervised 7 PhD students to completion and welcomes interesting PhD applications.</small>
+          <b>👋 Meet the research team</b>
+          <div class="team-grid">
+            <div class="team-member"><span class="team-avatar">${teamAvatars.kate}</span><b>Kate Han</b><br><a href="https://www.salford.ac.uk/our-staff/kate-han" target="_blank" rel="noopener noreferrer">View profile</a><small>Lecturer in Digital Business. Her research spans AI, simulation, digital twins, sustainability, and digital transformation.</small></div>
+            <div class="team-member"><span class="team-avatar">${teamAvatars.ruth}</span><b>Ruth Hudson</b><br><a href="https://www.salford.ac.uk/our-staff/ruth-hudson" target="_blank" rel="noopener noreferrer">View profile</a><small>Higher education curriculum developer, researcher, teaching specialist, and Carbon Literacy project lead.</small></div>
+            <div class="team-member"><span class="team-avatar">${teamAvatars.ashraful}</span><b>Ashraful Alam</b><br><a href="https://www.salford.ac.uk/our-staff/md-ashraful-alam" target="_blank" rel="noopener noreferrer">View profile</a><small>Associate Professor of Sustainability whose research focuses on sustainability, innovation, governance, and fintech.</small></div>
+          </div>
         </div>
 
         <div class="notice">
@@ -409,8 +473,8 @@ function render() {
         </div>
 
         <div class="notice">
-          <b>Download study documents</b><br>
-          <ul>
+          <b>📄 Explore the study documents</b><br>
+          <ul class="document-list">
             <li><a href="Participant%20Information%20Sheet%20%E2%80%93%20CircuBee%20Sustainable%20Business%20Participation%20Study.docx" download>Participant Information Sheet</a></li>
             <li><a href="Participant%20Consent%20Form%20%E2%80%93%20CircuBee%20Study.docx" download>Participant Consent Form</a></li>
             <li><a href="Research%20Participant%20Risk%20Assessment%20%E2%80%93%20CircuBee%20Project.docx" download>Research Participant Risk Assessment</a></li>
@@ -429,8 +493,9 @@ function render() {
   if (step === 9) {
     a.innerHTML = `
       <div class="card">
-        <h2>Would you participate?</h2>
-        <p>How likely would you be to participate in a local circular rewards scheme?</p>
+        <span class="mission-label">Choose your next move 🎯</span>
+        <h2>Would you join the hive?</h2>
+        <p>After playing through the challenge, how likely are you to take part in a local circular rewards scheme?</p>
         <div class="notice">
           <b>Participation is free</b><br>
           This research is free to join, and no money is expected from participants. There is no payment required to take part.
@@ -453,7 +518,7 @@ function render() {
           .join("")}
         <div class="actions">
           <button class="btn secondary" onclick="prev()">Back</button>
-          <button class="btn" ${!decision ? "disabled" : ""} onclick="next()">Continue</button>
+          <button class="btn" ${!decision ? "disabled" : ""} onclick="next()">Lock in my decision 🔒</button>
         </div>
       </div>
     `;
@@ -468,9 +533,9 @@ function render() {
 
         <div class="notice">
           <b>Research team contact details</b><br>
-          <b>Kate Han</b> — k.han3@salford.ac.uk<br>
-          <b>Ruth Hudson</b> — R.A.Hudson@salford.ac.uk<br>
-          <b>Ashraful Alam</b> — m.a.alam@salford.ac.uk<br>
+          <span class="team-avatar">${teamAvatars.kate}</span> <b>Kate Han</b> — k.han3@salford.ac.uk<br>
+          <span class="team-avatar">${teamAvatars.ruth}</span> <b>Ruth Hudson</b> — R.A.Hudson@salford.ac.uk<br>
+          <span class="team-avatar">${teamAvatars.ashraful}</span> <b>Ashraful Alam</b> — m.a.alam@salford.ac.uk<br>
         </div>
 
         <div class="notice">
@@ -490,8 +555,9 @@ function render() {
       if (step === 11) {
     a.innerHTML = `
       <div class="card">
-        <h2>Thank you</h2>
-        <p>Your Balance Challenge is complete.</p>
+        <span class="mission-label">Mission complete 🎉</span>
+        <h2>🐝 You made the buzz!</h2>
+        <p>Your Balance Challenge is complete. Here is the strategy you built for your business.</p>
         <div class="notice">
           Please stay for the group discussion at the end of the activity. Participants will receive a £10 Amazon voucher.
         </div>
@@ -505,11 +571,12 @@ function render() {
             <p>${selections.benefits.map((i) => data.benefits[i][0]).join(", ") || "None"}</p>
           </div>
           <div class="cat blue">
-            <h3>Support</h3>
+            <h3>Enablers</h3>
             <p>${selections.support.map((i) => data.support[i][0]).join(", ") || "None"}</p>
           </div>
         </div>
         <div class="notice">
+          <b>Player avatar:</b> ${participant.avatar}<br>
           <b>Email:</b> ${escapeHtml(participant.email)}<br>
           <b>Industry sector:</b> ${escapeHtml(participant.industry)}<br>
           <b>Employees:</b> ${escapeHtml(participant.employees)}<br>
@@ -544,9 +611,56 @@ function start() {
 function setParticipant(field, value) {
   participant[field] = value;
 
+  if (field === "industry") {
+    participant.avatar = industryAvatar(value);
+  }
+
   if (field === "email" || field === "postcode") {
     validationState[field] = validationState[field] || !!value.trim();
   }
+}
+
+function industryAvatar(industry) {
+  if (industry.includes("Retail")) return "🛍️";
+  if (industry.includes("Food and drink")) return "🍽️";
+  if (industry.includes("Health and beauty")) return "💆";
+  if (industry.includes("Professional services")) return "💼";
+  if (industry.includes("Creative / media")) return "🎨";
+  if (industry.includes("Education / training")) return "📚";
+  if (industry.includes("Manufacturing")) return "🏭";
+  if (industry.includes("Construction")) return "🦺";
+  if (industry.includes("Technology / digital")) return "💻";
+  if (industry.includes("Transport / logistics")) return "🚚";
+  if (industry.includes("Charity / social enterprise")) return "🤝";
+  if (industry.includes("student")) return "🎓";
+  return industry ? "♻️" : "🐝";
+}
+
+function syncParticipantDetails() {
+  const fields = {
+    email: "participant-email",
+    industry: "participant-industry",
+    employees: "participant-employees",
+    postcode: "participant-postcode",
+    address: "participant-address"
+  };
+
+  Object.entries(fields).forEach(([field, id]) => {
+    const element = document.getElementById(id);
+    if (element) setParticipant(field, element.value);
+  });
+}
+
+function continueFromParticipantDetails() {
+  participantDetailsChecked = true;
+  syncParticipantDetails();
+
+  if (participantDetailsComplete()) {
+    next();
+    return;
+  }
+
+  render();
 }
 
 function appendMagicSuggestion(suggestion) {
@@ -622,6 +736,7 @@ function buildSpreadsheetRow() {
   return {
     ResponseID: responseId,
     Timestamp: new Date().toISOString(),
+    PlayerAvatar: participant.avatar,
     ResearchConsent: consent ? "Yes" : "No",
     Email: participant.email.trim(),
     IndustrySector: participant.industry,

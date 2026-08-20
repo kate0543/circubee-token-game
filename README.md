@@ -1,6 +1,6 @@
-# CircuBee Token Game
+# CircuBee Balance Challenge
 
-An interactive online version of the CircuBee Balance Challenge for stakeholder engagement and social-science research.
+An interactive decision game for stakeholder engagement and social-science research. Players act as the decision-maker for a local business and build a CircuBee launch strategy.
 
 ## Run locally
 
@@ -20,13 +20,15 @@ Save the setting. GitHub Pages will publish the site at the repository's Pages U
 
 ## Current flow
 
-The application now includes a multi-step participant journey:
+The application now includes a mission-based game journey:
 
-- consent and introductory information
-- participant details validation
-- barriers, benefits, and support selection
-- weighting of selected items
-- balance summary
+- mission briefing and consent information
+- player/business setup with participant details validation
+- Round 1: identify barriers that could stop the launch
+- Round 2: choose benefits that could create momentum
+- Round 3: unlock enablers that could make the idea workable
+- energy allocation to show which cards matter most
+- strategy balance and readiness outcome
 - “What would change your view?” optional response
 - “About CircuBee” information page
 - participation decision
@@ -45,10 +47,11 @@ These are linked from the About CircuBee page and can be downloaded directly in 
 
 ## Current features
 
-- Barrier, motivation/benefit and enabler/support tokens
+- Mission framing with live round, balance, and token HUD
+- Barrier, benefit, and enabler tokens
 - Maximum three selections per category
-- Priority weighting from 1–3
-- Balance calculation
+- Priority weighting from 1–3 energy
+- Balance calculation with a readiness result
 - Participation decision
 - Optional “What would change your view?” response with clickable suggestion chips
 - Email and postcode format validation

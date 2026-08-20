@@ -9,9 +9,10 @@
       --red: #d94b4b;
       --green: #2f9d68;
       --blue: #3978c9;
+      --amber: #e6a23c;
       --ink: #24303a;
       --muted: #66727d;
-      --bg: #f5f7f8;
+      --bg: #eef3f1;
       --card: #fff;
       --line: #dfe5e8;
     }
@@ -22,7 +23,7 @@
 
     body {
       margin: 0;
-      font-family: Inter, system-ui, sans-serif;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--ink);
       line-height: 1.45;
@@ -31,28 +32,29 @@
     .wrap {
       max-width: 1050px;
       margin: auto;
-      padding: 20px;
+      padding: clamp(12px, 3vw, 20px);
     }
 
     .hero {
-      background: var(--ink);
+      background: linear-gradient(135deg, #173d3a 0%, #245b52 62%, #d48b35 150%);
       color: white;
       border-radius: 18px;
-      padding: 28px;
+      padding: clamp(18px, 4vw, 28px);
       margin-bottom: 18px;
     }
 
     .brand-logos {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: clamp(8px, 2vw, 14px);
       flex-wrap: wrap;
       margin-bottom: 16px;
     }
 
     .brand-logos img {
       display: block;
-      max-height: 56px;
+      max-width: 100%;
+      max-height: clamp(40px, 7vw, 56px);
       width: auto;
       object-fit: contain;
       background: rgba(255, 255, 255, 0.08);
@@ -60,13 +62,94 @@
       padding: 6px 8px;
     }
 
+    .brand-logos .bee-mark {
+      width: clamp(52px, 9vw, 70px);
+      height: clamp(52px, 9vw, 70px);
+      max-height: none;
+      padding: 8px;
+      border: 3px solid #f5c76c;
+      border-radius: 50%;
+      background: white;
+    }
+
     .hero h1 {
       margin: 4px 0;
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(1.75rem, 5vw, 3rem);
+      line-height: 1.08;
     }
 
     .hero p {
       color: #dbe2e6;
+    }
+
+    .hive-signal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      color: #fff3c4;
+      font-weight: 700;
+    }
+
+    .hive-signal .bee {
+      display: inline-block;
+      font-size: 1.5rem;
+      animation: buzz 1.8s ease-in-out infinite;
+    }
+
+    @keyframes buzz {
+      0%, 100% { transform: translateX(0) rotate(-4deg); }
+      50% { transform: translateX(5px) rotate(4deg); }
+    }
+
+    .mission-label {
+      color: #f5c76c;
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .player-avatar {
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      margin: 14px 0 8px;
+      border: 3px solid #f1c45b;
+      border-radius: 50%;
+      background: #fff9df;
+      font-size: 2.3rem;
+      box-shadow: 0 4px 0 #d9a83c;
+    }
+
+    .team-avatar {
+      display: inline-block;
+      width: 1.5em;
+      text-align: center;
+      font-size: 1.2rem;
+      vertical-align: -2px;
+    }
+
+    .game-hud {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .hud-item {
+      flex: 1 1 130px;
+      background: #ffffff1c;
+      border: 1px solid #ffffff40;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: .9rem;
+    }
+
+    .hud-item strong {
+      color: #f5c76c;
+      font-size: 1.05rem;
     }
 
     .progress {
@@ -90,8 +173,31 @@
       background: white;
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 24px;
+      padding: clamp(16px, 3vw, 24px);
       box-shadow: 0 5px 18px #18242b0b;
+    }
+
+    .round-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: #f0f7ee;
+      border-left: 5px solid var(--green);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 16px 0;
+    }
+
+    .round-banner b {
+      color: #23664b;
+    }
+
+    .selection-count {
+      color: var(--muted);
+      font-size: .9rem;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
     .grid {
@@ -120,7 +226,7 @@
 
     .tokens {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
       gap: 10px;
       margin: 18px 0;
     }
@@ -134,6 +240,33 @@
       text-align: left;
       cursor: pointer;
       font: inherit;
+    }
+
+    .token:hover,
+    .choice:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px #18242b18;
+    }
+
+    .token {
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    .token.selected {
+      box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px currentColor;
+      transform: translateY(-3px) rotate(-1deg);
+    }
+
+    .token.selected.red::before {
+      content: "⚠️ ";
+    }
+
+    .token.selected.green::before {
+      content: "🌱 ";
+    }
+
+    .token.selected.blue::before {
+      content: "🔓 ";
     }
 
     .token small {
@@ -163,6 +296,81 @@
       margin: 9px 0;
     }
 
+    .weight-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .token-score-label {
+      display: flex;
+      align-items: center;
+      font-size: .95rem;
+    }
+
+    .token-coin {
+      display: none;
+    }
+
+    .weight-btn {
+      flex: 0 0 auto;
+      width: auto !important;
+      min-width: 0;
+      max-width: none;
+      height: auto !important;
+      min-height: 0;
+      max-height: none;
+      padding: 0;
+      text-align: center;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      box-shadow: none;
+    }
+
+    .weight-btn:hover {
+      background: transparent;
+    }
+
+    .coin-face {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      border: 3px solid #c4872e;
+      background: #ffe27a;
+      color: #684814;
+      font-size: .95rem;
+      font-weight: 800;
+      line-height: 1;
+      box-shadow: inset 0 2px 0 #fff3ae, 0 3px 0 #c4872e;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .coin-face.coin-1 {
+      width: 34px;
+      height: 34px;
+    }
+
+    .coin-face.coin-2 {
+      width: 42px;
+      height: 42px;
+    }
+
+    .coin-face.coin-3 {
+      width: 50px;
+      height: 50px;
+    }
+
+    .weight-btn.secondary .coin-face {
+      background: #fff8d8;
+    }
+
+    .weight-btn:hover .coin-face {
+      transform: translateY(-2px);
+    }
+
     .choice.selected {
       border-color: var(--ink);
       background: #eef2f4;
@@ -185,6 +393,19 @@
 
     .btn:disabled {
       opacity: 0.4;
+    }
+
+    .field-invalid,
+    .field-required {
+      border-color: #c93636 !important;
+      background: #fff7f7;
+    }
+
+    .validation-message {
+      color: #c93636;
+      font-size: .9rem;
+      font-weight: 700;
+      margin: 6px 0 14px;
     }
 
     .actions {
@@ -243,6 +464,27 @@
       border: 2px dashed var(--line);
       border-radius: 14px;
       padding: 15px;
+      transition: transform .25s ease, background .25s ease;
+    }
+
+    .pan.winner {
+      transform: scale(1.06);
+      background: #fff9df;
+      border-style: solid;
+      border-color: #e6a23c;
+    }
+
+    .pan.winner .score {
+      font-size: 3rem;
+      color: #b66d16;
+    }
+
+    .winner-badge {
+      display: block;
+      color: #b66d16;
+      font-size: .78rem;
+      font-weight: 800;
+      margin-top: 6px;
     }
 
     .beam {
@@ -256,13 +498,182 @@
       font-weight: 800;
     }
 
+    .score-callout {
+      background: #fff8e8;
+      border: 1px solid #ead39b;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .game-signal {
+      border: 2px solid #f1c45b;
+      background: #fff9df;
+      border-radius: 14px;
+      padding: 13px 16px;
+      margin: 16px 0;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .game-signal .signal-icon {
+      font-size: 1.45rem;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    .about-hero {
+      background: linear-gradient(135deg, #fff7d5, #f0f8e9);
+      border: 2px solid #e9c45d;
+      border-radius: 15px;
+      padding: 18px;
+      margin: 16px 0;
+    }
+
+    .about-hero h3 {
+      margin: 0 0 6px;
+      color: #23664b;
+    }
+
+    .about-hero p {
+      margin-bottom: 0;
+    }
+
+    .hive-facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .hive-fact {
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--amber);
+      border-radius: 11px;
+      padding: 13px;
+      background: #fff;
+    }
+
+    .hive-fact strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .team-member {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 13px;
+      background: #fbfcfc;
+    }
+
+    .team-member .team-avatar {
+      display: block;
+      width: auto;
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+
+    .team-member small {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .document-list {
+      display: grid;
+      gap: 8px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .document-list a {
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 10px 12px;
+      background: white;
+      font-weight: 700;
+    }
+
     @media (max-width: 700px) {
+      .hero {
+        border-radius: 14px;
+      }
+
+      .mission-label {
+        font-size: .68rem;
+      }
+
+      .brand-logos {
+        margin-bottom: 12px;
+      }
+
+      .hero p {
+        margin: 10px 0;
+      }
+
+      .hive-signal {
+        font-size: .9rem;
+      }
+
+      .game-hud {
+        gap: 6px;
+        margin-top: 14px;
+      }
+
+      .hud-item {
+        flex-basis: 90px;
+        padding: 7px 8px;
+        font-size: .78rem;
+      }
+
+      .hud-item strong {
+        font-size: .95rem;
+      }
+
       .grid {
         grid-template-columns: 1fr;
       }
 
-      .scale {
+      .hive-facts,
+      .team-grid {
         grid-template-columns: 1fr;
+      }
+
+      .scale {
+        grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr);
+        gap: 6px;
+      }
+
+      .scale .pan {
+        min-height: 125px;
+        padding: 10px 6px;
+      }
+
+      .scale .pan h3 {
+        font-size: .9rem;
+        overflow-wrap: anywhere;
+      }
+
+      .scale .score {
+        font-size: 1.8rem;
+      }
+
+      .scale .pan.winner {
+        transform: scale(1.03);
+      }
+
+      .scale .pan.winner .score {
+        font-size: 2.25rem;
       }
 
       .actions {
@@ -273,8 +684,96 @@
         width: 100%;
       }
 
+      .choice {
+        padding: 10px;
+        margin: 7px 0;
+      }
+
+      .choice > b {
+        display: block;
+        font-size: .88rem;
+        line-height: 1.2;
+      }
+
+      .weight-controls {
+        gap: 4px;
+      }
+
+      .weight-btn {
+        width: auto !important;
+        min-width: 0;
+        max-width: none;
+        height: auto !important;
+        flex-basis: auto;
+        padding: 0;
+      }
+
+      .coin-face.coin-1 {
+        width: 30px !important;
+        height: 30px !important;
+      }
+
+      .coin-face.coin-2 {
+        width: 38px !important;
+        height: 38px !important;
+      }
+
+      .coin-face.coin-3 {
+        width: 46px !important;
+        height: 46px !important;
+      }
+
       .wrap {
         padding: 12px;
+      }
+
+      .round-banner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .selection-count {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .wrap {
+        padding: 8px;
+      }
+
+      .hero {
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+
+      .brand-logos img {
+        max-height: 34px;
+      }
+
+      .brand-logos .bee-mark {
+        width: 48px;
+        height: 48px;
+        padding: 5px;
+        border-width: 2px;
+      }
+
+      .hero h1 {
+        font-size: 1.7rem;
+      }
+
+      .progress {
+        gap: 3px;
+        margin-top: 12px;
+      }
+
+      .dot {
+        height: 5px;
+      }
+
+      .card {
+        border-radius: 12px;
       }
     }
   </style>
@@ -283,13 +782,21 @@
   <main class="wrap">
     <section class="hero">
       <div class="brand-logos" aria-label="Partner logos">
+        <img class="bee-mark" src="s-l1200.jpg" alt="Manchester bee mark">
         <img src="ukri-esrc-square-logo.png" alt="UKRI ESRC logo">
         <img src="UoS-SBS-combined.jpg" alt="University of Salford Business School logo">
         <img src="CSI.png" alt="CSI logo">
       </div>
+      <span class="mission-label">Mission: build a circular local economy</span>
       <b>CIRCUBEE</b>
       <h1>Balance Challenge</h1>
-      <p>What would make a local business say YES to a circular rewards scheme?</p>
+      <p>Make the calls that could turn a local business into a CircuBee champion.</p>
+      <div class="hive-signal"><span class="bee">🐝</span> Your hive needs a smart strategy!</div>
+      <div class="game-hud" aria-label="Game status">
+        <span class="hud-item">Round <strong id="round-status">Setup</strong></span>
+        <span class="hud-item">Balance <strong id="impact-status">Pending</strong></span>
+        <span class="hud-item">Tokens <strong id="choice-status">0</strong></span>
+      </div>
       <div class="progress" id="progress"></div>
     </section>
     <section id="app"></section>
