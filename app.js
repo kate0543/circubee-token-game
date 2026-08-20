@@ -440,7 +440,7 @@ function render() {
 
         <div class="notice">
           <b>🎟️ Participation is free</b><br>
-          This research is free to join, and no money is expected from participants. There is no payment required to take part in this project or in the activities described here.
+          You do not need to pay anything to join this research. We are inviting you to explore the CircuBee concept with us, share your thoughts, and tell us what could make it work for local businesses and communities. Your time, ideas, and honest feedback are valuable contributions.
         </div>
 
         <div class="notice">
@@ -498,7 +498,7 @@ function render() {
         <p>After playing through the challenge, how likely are you to take part in a local circular rewards scheme?</p>
         <div class="notice">
           <b>Participation is free</b><br>
-          This research is free to join, and no money is expected from participants. There is no payment required to take part.
+          There is no cost to join and no payment or purchase is expected from you. We simply invite you to explore the CircuBee concept, make your choices, and share your views. Your thoughts help us understand how the idea could work in real local communities.
         </div>
         <div class="notice">
           <b>Potential benefits for participants:</b><br>
@@ -558,8 +558,9 @@ function render() {
         <span class="mission-label">Mission complete 🎉</span>
         <h2>🐝 You made the buzz!</h2>
         <p>Your Balance Challenge is complete. Here is the strategy you built for your business.</p>
-        <div class="notice">
-          Please stay for the group discussion at the end of the activity. Participants will receive a £10 Amazon voucher.
+        <div class="reward-card">
+          <span class="reward-icon">🎁</span>
+          <div><strong>Participant reward</strong><span class="reward-amount">£10 Amazon voucher</span>Please stay for the group discussion at the end of the activity to receive it.</div>
         </div>
         <div class="grid">
           <div class="cat red">

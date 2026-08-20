@@ -21,6 +21,12 @@
       box-sizing: border-box;
     }
 
+    html,
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       margin: 0;
       font-family: "Trebuchet MS", "Segoe UI", sans-serif;
@@ -30,9 +36,9 @@
     }
 
     .wrap {
-      max-width: 1050px;
+      width: min(100%, 1500px);
       margin: auto;
-      padding: clamp(12px, 3vw, 20px);
+      padding: clamp(10px, 2vw, 24px);
     }
 
     .hero {
@@ -40,7 +46,7 @@
       color: white;
       border-radius: 18px;
       padding: clamp(18px, 4vw, 28px);
-      margin-bottom: 18px;
+      margin-bottom: clamp(12px, 2vw, 24px);
     }
 
     .brand-logos {
@@ -173,8 +179,10 @@
       background: white;
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: clamp(16px, 3vw, 24px);
+      padding: clamp(16px, 2.5vw, 32px);
       box-shadow: 0 5px 18px #18242b0b;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .round-banner {
@@ -226,7 +234,7 @@
 
     .tokens {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
       gap: 10px;
       margin: 18px 0;
     }
@@ -523,6 +531,35 @@
       margin-right: 5px;
     }
 
+    .reward-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, #fff4bd, #ffe28a);
+      border: 3px solid #e6a23c;
+      border-radius: 15px;
+      padding: 16px 18px;
+      margin: 16px 0;
+      color: #684814;
+    }
+
+    .reward-card .reward-icon {
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .reward-card strong {
+      display: block;
+      font-size: 1.25rem;
+    }
+
+    .reward-card .reward-amount {
+      display: block;
+      font-size: 1.8rem;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
     .about-hero {
       background: linear-gradient(135deg, #fff7d5, #f0f8e9);
       border: 2px solid #e9c45d;
@@ -553,6 +590,8 @@
       border-radius: 11px;
       padding: 13px;
       background: #fff;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .hive-fact strong {
@@ -572,6 +611,8 @@
       border-radius: 11px;
       padding: 13px;
       background: #fbfcfc;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .team-member .team-avatar {
@@ -602,11 +643,55 @@
       padding: 10px 12px;
       background: white;
       font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    @media (min-width: 1100px) {
+      .wrap {
+        width: min(100%, 1500px);
+      }
+
+      .hero h1 {
+        font-size: clamp(2.8rem, 4vw, 4rem);
+      }
+
+      .hero p {
+        max-width: 760px;
+        font-size: 1.1rem;
+      }
+
+      .card {
+        font-size: 1.03rem;
+      }
+
+      .tokens {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 701px) and (max-width: 1099px) {
+      .wrap {
+        max-width: 920px;
+      }
+
+      .tokens {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .hive-facts,
+      .team-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 700px) {
       .hero {
         border-radius: 14px;
+      }
+
+      .wrap {
+        width: 100%;
+        padding: 10px;
       }
 
       .mission-label {
@@ -623,6 +708,11 @@
 
       .hive-signal {
         font-size: .9rem;
+      }
+
+      .reward-card {
+        align-items: flex-start;
+        padding: 14px;
       }
 
       .game-hud {
@@ -642,6 +732,15 @@
 
       .grid {
         grid-template-columns: 1fr;
+      }
+
+      .tokens {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .token {
+        padding: 11px 10px;
       }
 
       .hive-facts,
@@ -733,6 +832,39 @@
         gap: 6px;
       }
 
+
+    @media (max-width: 420px) {
+      .hero {
+        padding: 16px;
+      }
+
+      .hero h1 {
+        font-size: 1.7rem;
+      }
+
+      .game-hud {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .hud-item {
+        min-width: 0;
+        padding: 7px 5px;
+        text-align: center;
+      }
+
+      .tokens {
+        grid-template-columns: 1fr;
+      }
+
+      .scale {
+        grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr);
+      }
+
+      .reward-card .reward-amount {
+        font-size: 1.45rem;
+      }
+    }
       .selection-count {
         white-space: normal;
       }
