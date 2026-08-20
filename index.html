@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CircuBee Balance Challenge</title>
+  <title>CircuBee Circular Token Balance Challenge</title>
   <style>
     :root {
       --red: #d94b4b;
@@ -354,6 +354,12 @@
       line-height: 1;
       box-shadow: inset 0 2px 0 #fff3ae, 0 3px 0 #c4872e;
       transition: transform .15s ease, box-shadow .15s ease;
+      animation: coinBob 2.2s ease-in-out infinite;
+    }
+
+    @keyframes coinBob {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-4px) rotate(2deg); }
     }
 
     .coin-face.coin-1 {
@@ -377,6 +383,7 @@
 
     .weight-btn:hover .coin-face {
       transform: translateY(-2px);
+      animation-play-state: paused;
     }
 
     .choice.selected {
@@ -529,6 +536,13 @@
       font-size: 1.45rem;
       vertical-align: middle;
       margin-right: 5px;
+      display: inline-block;
+      animation: signalPulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes signalPulse {
+      0%, 100% { transform: scale(1) rotate(0); }
+      50% { transform: scale(1.18) rotate(-8deg); }
     }
 
     .reward-card {
@@ -546,6 +560,13 @@
     .reward-card .reward-icon {
       font-size: 2.5rem;
       line-height: 1;
+      display: inline-block;
+      animation: rewardBounce 1.5s ease-in-out infinite;
+    }
+
+    @keyframes rewardBounce {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50% { transform: translateY(-8px) rotate(5deg); }
     }
 
     .reward-card strong {
@@ -644,6 +665,16 @@
       background: white;
       font-weight: 700;
       overflow-wrap: anywhere;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
     }
 
     @media (min-width: 1100px) {
@@ -921,7 +952,7 @@
       </div>
       <span class="mission-label">Mission: build a circular local economy</span>
       <b>CIRCUBEE</b>
-      <h1>Balance Challenge</h1>
+      <h1>Circular Token Balance Challenge</h1>
       <p>Make the calls that could turn a local business into a CircuBee champion.</p>
       <div class="hive-signal"><span class="bee">🐝</span> Your hive needs a smart strategy!</div>
       <div class="game-hud" aria-label="Game status">

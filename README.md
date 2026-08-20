@@ -1,4 +1,4 @@
-# CircuBee Balance Challenge
+# CircuBee Circular Token Balance Challenge
 
 An interactive decision game for stakeholder engagement and social-science research. Players act as the decision-maker for a local business and build a CircuBee launch strategy.
 

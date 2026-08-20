@@ -174,8 +174,8 @@ function render() {
 
         a.innerHTML = `
           <div class="card">
-            <span class="mission-label">Player setup</span>
-            <h2>🛠️ Set up your business</h2>
+            <span class="mission-label">Player setup 🕹️</span>
+            <h2>🛠️ Set up your business 🏪</h2>
             <div class="player-avatar" title="Your industry avatar">${participant.avatar}</div>
             <p><b>${participant.avatar} Your industry avatar</b> — choose your sector below and your character will match it.</p>
             <p>Tell us who is entering the challenge. Fill every field to unlock Round 1 and get your first token mission.</p>
@@ -271,14 +271,14 @@ function render() {
       support: "🔵 Enablers"
     }[key];
     const round = {
-      barriers: ["Round 1: Spot the friction", "Your business has limited time and attention. Which barrier tokens could block the CircuBee launch?", "Choose up to 3 barrier tokens for your watchlist."],
-      benefits: ["Round 2: Find the spark", "Which benefit tokens could get customers and staff excited about CircuBee?", "Choose up to 3 benefit tokens to power up your business."],
-      support: ["Round 3: Unlock enablers", "Which enabler tokens could give your CircuBee launch the boost it needs?", "Choose up to 3 enabler tokens to unlock."]
+      barriers: ["Round 1: Spot the friction ⚠️", "Your business has limited time and attention. Which barrier tokens could block the CircuBee launch?", "Choose up to 3 barrier tokens for your watchlist."],
+      benefits: ["Round 2: Find the spark ⭐", "Which benefit tokens could get customers and staff excited about CircuBee?", "Choose up to 3 benefit tokens to power up your business."],
+      support: ["Round 3: Unlock enablers 🔓", "Which enabler tokens could give your CircuBee launch the boost it needs?", "Choose up to 3 enabler tokens to unlock."]
     }[key];
 
     a.innerHTML = `
       <div class="card">
-        <span class="mission-label">Your next move 🐝</span>
+        <span class="mission-label">Your next move 🕹️🐝</span>
         <h2>${round[0]}</h2>
         <div class="round-banner"><span><b>${head}</b><br>${round[1]}</span><span class="selection-count">${selections[key].length}/3 tokens</span></div>
         <p><b>${round[2]}</b> Tap a token to collect it. Tap again to send it back to the hive.</p>
@@ -296,7 +296,7 @@ function render() {
         </div>
         <div class="actions">
           <button class="btn secondary" onclick="prev()">Back</button>
-          <button class="btn" ${!selections[key].length ? "disabled" : ""} onclick="next()">Lock in tokens 🔒</button>
+          <button class="btn" ${!selections[key].length ? "disabled" : ""} onclick="next()">Lock in tokens 🔒🏁</button>
         </div>
       </div>
     `;
@@ -306,10 +306,10 @@ function render() {
   if (step === 5) {
     a.innerHTML = `
       <div class="card">
-        <span class="mission-label">Power-up round ⚡</span>
-        <h2>Assign points to your tokens</h2>
-        <div class="round-banner"><span><b>How important is each token?</b><br>Choose a small, medium, or large coin for every selected token. The larger the coin, the bigger its pull on your final balance.</span><span class="selection-count">1-3 points</span></div>
-        <p>Tap <b>1</b>, <b>2</b>, or <b>3</b> for each token. <b>1</b> means useful, <b>2</b> means important, and <b>3</b> means critical.</p>
+        <span class="mission-label">Power-up round ⚡🍄</span>
+        <h2>🪙 Assign points to your tokens</h2>
+        <div class="round-banner"><span><b>How important is each token?</b><br>Collect a small, medium, or large game coin for every selected token. Bigger coin, bigger pull on the final balance!</span><span class="selection-count">🪙 1-3 points</span></div>
+        <p>Choose your power-up: <b>🪙 1</b> = useful, <b>⭐ 2</b> = important, and <b>🍄 3</b> = critical. Give each token its score before reaching the finish flag 🏁.</p>
         ${["barriers", "benefits", "support"]
           .map(
             (k) => `
@@ -355,8 +355,8 @@ function render() {
 
     a.innerHTML = `
       <div class="card">
-        <span class="mission-label">Game complete 🎉</span>
-        <h2>⚖️ Strategy showdown!</h2>
+        <span class="mission-label">Game complete 🎉🏁</span>
+        <h2>⚖️ Strategy showdown! 🏆</h2>
         <div class="score-callout"><span class="signal-icon">🐝</span> ${readiness}</div>
         <p style="text-align:center">${resultTone} Watch your tokens take their places on the balance scale!</p>
         <div class="scale">
@@ -402,8 +402,8 @@ function render() {
 
     a.innerHTML = `
       <div class="card">
-        <span class="mission-label">Reflection &amp; feedback 💬</span>
-        <h2>What would change your view?</h2>
+        <span class="mission-label">Bonus round 💬⭐</span>
+        <h2>What would change your view? 💡</h2>
         <p>The game is complete! What could give CircuBee an even bigger buzz for you?</p>
         <div class="suggestions">
           ${magicHints
@@ -450,7 +450,7 @@ function render() {
 
         <div class="notice">
           <b>🧭 What we are figuring out</b><br>
-          Which barriers get in the way? Which benefits create momentum? Which enablers could help a business take the first step? Your Balance Challenge helps us explore those questions before a future pilot is tested.
+          Which barriers get in the way? Which benefits create momentum? Which enablers could help a business take the first step? Your Circular Token Balance Challenge helps us explore those questions before a future pilot is tested.
         </div>
 
         <div class="notice">
@@ -493,8 +493,8 @@ function render() {
   if (step === 9) {
     a.innerHTML = `
       <div class="card">
-        <span class="mission-label">Choose your next move 🎯</span>
-        <h2>Would you join the hive?</h2>
+        <span class="mission-label">Choose your next move 🎯🕹️</span>
+        <h2>Would you join the hive? 🐝</h2>
         <p>After playing through the challenge, how likely are you to take part in a local circular rewards scheme?</p>
         <div class="notice">
           <b>Participation is free</b><br>
@@ -555,24 +555,24 @@ function render() {
       if (step === 11) {
     a.innerHTML = `
       <div class="card">
-        <span class="mission-label">Mission complete 🎉</span>
-        <h2>🐝 You made the buzz!</h2>
-        <p>Your Balance Challenge is complete. Here is the strategy you built for your business.</p>
+        <span class="mission-label">Mission complete 🎉🏆</span>
+        <h2>🐝 You made the buzz! 🌟</h2>
+        <p>Your Circular Token Balance Challenge is complete. Here is the strategy you built for your business.</p>
         <div class="reward-card">
           <span class="reward-icon">🎁</span>
           <div><strong>Participant reward</strong><span class="reward-amount">£10 Amazon voucher</span>Please stay for the group discussion at the end of the activity to receive it.</div>
         </div>
         <div class="grid">
           <div class="cat red">
-            <h3>Barriers</h3>
+            <h3>🔴 Barriers</h3>
             <p>${selections.barriers.map((i) => data.barriers[i][0]).join(", ") || "None"}</p>
           </div>
           <div class="cat green">
-            <h3>Benefits</h3>
+            <h3>🟢 Benefits</h3>
             <p>${selections.benefits.map((i) => data.benefits[i][0]).join(", ") || "None"}</p>
           </div>
           <div class="cat blue">
-            <h3>Enablers</h3>
+            <h3>🔵 Enablers</h3>
             <p>${selections.support.map((i) => data.support[i][0]).join(", ") || "None"}</p>
           </div>
         </div>
