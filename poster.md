@@ -13,11 +13,11 @@
 
 <p align="center" style="font-size: 20px;"><em>A live, interactive decision game about building a circular economy business</em></p>
 
-<h2 align="center" style="font-size: 32px; padding: 20px; background-color: #f0f0f0;">✨ FREE TO JOIN — BOOKING REQUIRED VIA EVENTBRITE ✨</h2>
+<h2 align="center" style="font-size: 32px; padding: 20px; background-color: #f0f0f0;">✨ FREE TO JOIN — BOOKING AVAILABLE VIA EVENTBRITE ✨</h2>
 
 | 📅 Date | ⏰ Round 1 | ⏰ Round 2 | 📍 Location | 🎟️ Places |
 |---|---|---|---|---|
-| **Tuesday 21 October** | **1:00 PM – 2:00 PM** | **3:00 PM – 4:00 PM** | **Salford Museum and Art Gallery, Manchester** | **15 places per round** |
+| **Tuesday 21 October** | **1:00 PM – 2:00 PM** | **3:00 PM – 4:00 PM** | **Salford Museum and Art Gallery, Manchester** | **15 spaces per round** |
 
 <h2 align="center" style="font-size: 28px;">🎁 Voucher Incentive</h2>
 
