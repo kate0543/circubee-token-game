@@ -17,7 +17,7 @@
 
 | 📅 Date | ⏰ Round 1 | ⏰ Round 2 | 📍 Location | 🎟️ Places |
 |---|---|---|---|---|
-| **Tuesday 21 October** | **1:00 PM – 2:00 PM** | **3:00 PM – 4:00 PM** | **Salford Museum and Art Gallery, Manchester** | **15 spaces per round** |
+| **Wednesday 21 October** | **1:00 PM – 2:00 PM** | **3:00 PM – 4:00 PM** | **Salford Museum and Art Gallery, Manchester** | **15 spaces per round** |
 
 <h2 align="center" style="font-size: 28px;">🎁 Voucher Incentive</h2>
 
