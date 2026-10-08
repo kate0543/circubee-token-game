@@ -15,9 +15,9 @@
 
 <h2 align="center" style="font-size: 32px; padding: 20px; background-color: #f0f0f0;">✨ FREE TO JOIN — BOOKING AVAILABLE VIA EVENTBRITE ✨</h2>
 
-| 📅 Date | ⏰ Round 1 | ⏰ Round 2 | 📍 Location | 🎟️ Places |
-|---|---|---|---|---|
-| **Wednesday 21 October** | **1:00 PM – 2:00 PM** | **3:00 PM – 4:00 PM** | **Salford Museum and Art Gallery, Manchester** | **15 spaces per round** |
+| 📅 Date | ⏰ Time | 📍 Location | 🎟️ Places |
+|---|---|---|---|
+| **Wednesday 21 October** | **2:00 PM – 3:00 PM** | **Salford Museum and Art Gallery, Learning Room** | **15 spaces** |
 
 <h2 align="center" style="font-size: 28px;">🎁 Voucher Incentive</h2>
 
@@ -32,15 +32,15 @@
   <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fwww.eventbrite.co.uk%2Fe%2Fcircubee-can-going-green-save-you-money-tickets-1999676880379" alt="QR code linking to the Eventbrite booking page" width="300">
 </p>
 
-<p align="center" style="font-size: 18px; margin: 20px 0;">Scan this QR code to open the Eventbrite booking page — 15 spaces available per round.</p>
+<p align="center" style="font-size: 18px; margin: 20px 0;">Scan this QR code to open the Eventbrite booking page — 15 spaces available.</p>
 
 <p align="center" style="font-size: 20px;">🔗 <strong><a href="https://www.eventbrite.co.uk/e/circubee-can-going-green-save-you-money-tickets-1999676880379">CircuBee: Can Going Green Save You Money?</a></strong></p>
 
 <h2 align="center" style="font-size: 28px; margin-top: 30px;">🚀 How It Works</h2>
 
 <ol style="font-size: 18px; line-height: 1.8;">
-<li>📲 Scan the QR code or visit the Eventbrite link to book your free place — choose Round 1 (1–2pm) or Round 2 (3–4pm), 15 places per round.</li>
-<li>🚶 Come to Salford Museum and Art Gallery, Manchester on 21 October, at your booked round time.</li>
+<li>📲 Scan the QR code or visit the Eventbrite link to book your free place for the 2:00–3:00 PM session — 15 places available.</li>
+<li>🚶 Come to the Learning Room at Salford Museum and Art Gallery on 21 October at 2:00 PM.</li>
 <li>🎮 Play the CircuBee token challenge as a local business decision-maker.</li>
 <li>🏆 Stay for the short group activity afterwards for your chance to win a £10 Amazon voucher.</li>
 </ol>
